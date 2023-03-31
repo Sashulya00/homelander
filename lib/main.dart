@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import 'dart:async';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      home: const MyHomePage(title: 'Homelander Sashulya'),
+      home: const MyHomePage(title: 'Homelander Sashulya🎉'),
     );
   }
 }
@@ -30,6 +31,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Color color = Color.fromRGBO(110, 255, 61, 1.0);
+  Random colorRandom = Random();
   List<String> text = [];
   int counter = 0;
   Timer? timer;
@@ -44,28 +47,41 @@ class _MyHomePageState extends State<MyHomePage> {
     if (counter < 100) {
       setState(() {
         counter++;
-        text.add("I'm Stronger. I'm Smarter. I'm Better. I Am Better!$counter");
+        colorGenerated();
+        text.add("I'm Stronger. I'm Smarter. I'm Better. I Am Better!🎆🎉$counter");
       });
     } else {
       timer?.cancel();
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: ListView.builder(
-            itemCount: text.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(text[index]),
-              );
-            }),
-      ),
-    );
+  void colorGenerated() {
+    setState(() {
+      int r = colorRandom.nextInt(255);
+      int g = colorRandom.nextInt(255);
+      int b = colorRandom.nextInt(255);
+      Color newColor = Color.fromRGBO(r, g, b, 1.0);
+      color = newColor;
+    });
   }
-}
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: color,
+          title: Text(widget.title),
+        ),
+        body: Center(
+          child: ListView.builder(
+
+              itemCount: text.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(text[index]),
+                );
+              }),
+        ),
+      );
+    }
+  }
+

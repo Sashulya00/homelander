@@ -35,14 +35,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Random colorRandom = Random();
   List<String> text = [];
   int counter = 0;
-  Timer? timer;
+  late final Timer timer = Timer.periodic(Duration(seconds: 1), (Timer t) => printText());
 
   @override
   void initState() {
     super.initState();
-    timer = Timer.periodic(Duration(seconds: 1), (Timer t) => printText());
+    timer;
   }
-
   void printText() {
     if (counter < 100) {
       setState(() {
@@ -51,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
         text.add("I'm Stronger. I'm Smarter. I'm Better. I Am Better!🎆🎉$counter");
       });
     } else {
-      timer?.cancel();
+      timer.cancel();
     }
   }
 
@@ -64,24 +63,30 @@ class _MyHomePageState extends State<MyHomePage> {
       color = newColor;
     });
   }
-    @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: color,
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: ListView.builder(
-
-              itemCount: text.length,
-              itemBuilder: (context, index) {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: false,
+            floating: true,
+            snap: true,
+            backgroundColor: color,
+            title: Text(widget.title),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) {
                 return ListTile(
                   title: Text(text[index]),
                 );
-              }),
-        ),
-      );
-    }
+              },
+              childCount: text.length,
+            ),
+          ),
+        ],
+      ),
+    );
   }
-
+}
